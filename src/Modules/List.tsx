@@ -200,7 +200,7 @@ export default function List({ fetchFunction }: ListProps) {
                     </div>
                     
                     <div className="filter-input-wrapper">
-                        <label>Cena min</label>
+                        <label>Cena min (zł)</label>
                         <input
                             type="number"
                             min={0}
@@ -208,7 +208,7 @@ export default function List({ fetchFunction }: ListProps) {
                             onChange={(e) => updateParam("price_from", e.target.value)}/>
                     </div>
                     <div className="filter-input-wrapper">
-                        <label>Cena max</label>
+                        <label>Cena max (zł)</label>
                         <input
                             type="number"
                             min={0}
