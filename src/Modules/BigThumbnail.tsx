@@ -15,11 +15,6 @@ export default function BigThumbnail({ data }: ThumbnailProps) {
             src={`${ApiService.url}/storage/${data.thumbnailPhoto}`} />
         : <Icon />
 
-    const handleAuthorClick = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
-        e.stopPropagation();
-        navigate(`/user/${data.author}`);
-    }
-
     return(
         <div className="big-thumbnail" onClick={() => navigate(`/post/${data.id}`)}>
             {photo}

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 import { LuChevronLeft, LuChevronRight, LuSearch } from "react-icons/lu";
-import type { City, Meta, Thumbnail, ThumbnailResponse } from "../ApiService";
+import type { City, ThumbnailResponse } from "../ApiService";
 import ApiService from "../ApiService";
 import PostThumbnail from "./PostThumbnail";
 import LoaderComponent from "./LoadingComponent";
@@ -27,7 +27,6 @@ export default function List({ fetchFunction }: ListProps) {
 
     const [cities, setCities] = useState<City[]>([]);
     const [citySearch, setCitySearch] = useState("");
-    const [km, setKm] = useState("");
     const [selectedCity, setSeletedCity] = useState<City | null>(null);
     const [showCityMenu, setShowCityMenu] = useState(false);
 

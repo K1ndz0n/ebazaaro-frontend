@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate, useParams, useSearchParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import type { Post } from "../ApiService";
 import ApiService from "../ApiService";
-import { LuBookCheck, LuBookmark, LuBookmarkCheck, LuBookMarked, LuPencil } from "react-icons/lu";
+import { LuBookmark, LuBookmarkCheck, LuPencil } from "react-icons/lu";
 import LoaderComponent from "../Modules/LoadingComponent";
-import LoadingButton from "../Modules/LoadingButton";
 
 
 export default function PostPage() {

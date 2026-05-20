@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import type { Post, Thumbnail } from "../ApiService";
+import type { Thumbnail } from "../ApiService";
 import ApiService from "../ApiService";
-import { data } from "react-router";
 import BigThumbnail from "../Modules/BigThumbnail";
 import PostThumbnail from "../Modules/PostThumbnail";
 import LoaderComponent from "../Modules/LoadingComponent";

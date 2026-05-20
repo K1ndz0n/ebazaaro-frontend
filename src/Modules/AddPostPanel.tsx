@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import type { AddPostData, Category, City, Photo, Post, User } from "../ApiService";
-import { data, useNavigate, useParams } from "react-router";
+import type { AddPostData, Category, City, Photo } from "../ApiService";
+import { useNavigate, useParams } from "react-router";
 import ApiService from "../ApiService";
 import LoadingButton from "./LoadingButton";
-import { REGIONS } from "./List";
-import { LuChevronDown, LuChevronUp, LuPlus, LuX } from "react-icons/lu";
+import { LuChevronDown, LuChevronUp, LuX } from "react-icons/lu";
 import LoaderComponent from "./LoadingComponent";
 import { IoLocationSharp } from "react-icons/io5";
 import { HiOutlineTrash } from "react-icons/hi";
@@ -222,9 +221,7 @@ export default function AddPostPanel({ editMode }: AddPostProps) {
                     }) 
                 })
             } else {
-                console.log(1)
                 if (token) {
-                    console.log(2)
                     await ApiService.addPost(postData, token).then(async (res) => {
                         await ApiService.setPhotos(res.id, formData, token).then(() => {
                             navigate(`/post/${res.id}`);

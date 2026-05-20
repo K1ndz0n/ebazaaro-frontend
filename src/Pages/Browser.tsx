@@ -1,4 +1,3 @@
-import { useSearchParams } from "react-router";
 import List from "../Modules/List";
 import ApiService from "../ApiService";
 

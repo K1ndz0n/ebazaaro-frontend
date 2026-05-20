@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams, useSearchParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import ApiService from "../ApiService";
 import LoaderComponent from "../Modules/LoadingComponent";
 import List from "../Modules/List";

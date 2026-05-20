@@ -1,16 +1,15 @@
 import './App.css'
-import { BrowserRouter, Link, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router'
+import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router'
 import Footer from './Modules/Footer'
 import { useState } from 'react'
 import NavMenu from './Modules/NavMenu';
-import { LuMenu, LuX } from "react-icons/lu";
+import { LuMenu } from "react-icons/lu";
 import Login from './Pages/Login';
 import Register from './Pages/Register';
 import Home from './Pages/Home';
 import CategoryList from './Modules/CategoryList';
 import Browser from './Pages/Browser';
 import UserPage from './Pages/UserPage';
-import { matchPath } from 'react-router';
 import PostPage from './Pages/PostPage';
 import AddPostPanel from './Modules/AddPostPanel';
 import LikedPosts from './Pages/LikedPosts';
