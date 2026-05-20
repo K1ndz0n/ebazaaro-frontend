@@ -21,12 +21,12 @@ export default function BigThumbnail({ data }: ThumbnailProps) {
             <div className="big-thumbnail-info-wrapper">
                 <div className="big-info-left">
                     <span className="title">{data.name}</span>
-                    <p style={{color: "#616161", wordBreak: 'break-word'}}>{data.city.name}, {data.city.voivodeship}</p>
-                    <span className="thumbnail-category">{data.category}</span>
+                    <span style={{color: "#616161", wordBreak: 'break-word'}}>{data.city.name}, {data.city.voivodeship}</span>
+                    <span className="big-thumbnail-category">{data.category}</span>
                 </div>
                 <div className="big-info-right">
                     <span className="big-condition">{data.condition === "NEW" ? "Nowy" : "Używany"}</span>
-                    <p className="big-price">{data.price} zł</p>
+                    <span className="big-price">{data.price} zł</span>
                 </div>
             </div>
         </div>

@@ -159,7 +159,7 @@ export default function PostPage() {
                     <span style={{color: "#494949", fontSize: "14px"}}>Utworzono {data?.created_at}</span>
                     <p style={{fontSize: "18px"}}>{data?.city.name}, {data?.city.voivodeship}</p>
                     <div className="info-down">
-                        <span className="price">{data?.price} zł | {data?.condition === "NEW" ? "Nowy" : "Używany"}</span>
+                        <span className="price">{data?.price} zł | {data?.condition === "new" ? "Nowy" : "Używany"}</span>
                     </div>
                 </div>
                 <div className="contact-info">

@@ -17,7 +17,7 @@ export default function AddPostPanel({ editMode }: AddPostProps) {
     const [description, setDescription] = useState<string | undefined>("");
     const [phoneNumber, setPhoneNumber] = useState<string | undefined>("");
     const [email, setEmail] = useState("");
-    const [price, setPrice] = useState(0);
+    const [price, setPrice] = useState<number>();
     const [categoryId, setCategoryId] = useState(0);
     const [photos, setPhotos] = useState<Photo[]>([]);
     const [condition, setCondition] = useState("");
@@ -198,7 +198,7 @@ export default function AddPostPanel({ editMode }: AddPostProps) {
             }
         });
 
-        if (!city) {
+        if (!city || !price) {
             return;
         }
 
@@ -335,8 +335,15 @@ export default function AddPostPanel({ editMode }: AddPostProps) {
                         </select>
                     </div>
                     <div className="add-post-input">
-                        <label>Cena</label>
-                        <input type="number" onChange={(e) => setPrice(Number(e.target.value))} value={price ?? null}/>
+                        <label>Cena (zł)</label>
+                        <input 
+                            type="number" 
+                            value={price ?? ""} 
+                            onChange={(e) => {
+                                const val = e.target.value;
+                                setPrice(val === "" ? undefined : Number(val));
+                            }} 
+                        />
                     </div>
                     <div className="add-post-input">
                         <label>Kategoria</label>
@@ -394,11 +401,18 @@ export default function AddPostPanel({ editMode }: AddPostProps) {
             <LoadingButton
                 ref={buttonRef}
                 className="form-button"
-                disabled={name === "" || city === null
-                     || email === ""
-                    || price < 0 || price > 10000000 || price === null
-                    || categoryId === 0 || categoryId === null
-                    || condition === ""}
+                disabled={
+                    name === "" || 
+                    city === null || 
+                    email === "" || 
+                    price === null || 
+                    price === undefined ||
+                    price < 0 || 
+                    price > 10000000 || 
+                    categoryId === 0 || 
+                    categoryId === null || 
+                    condition === ""
+                }
                 text={editMode ? "Zapisz" : "Dodaj"}
                 onClick={() => handleRequest()}
             />

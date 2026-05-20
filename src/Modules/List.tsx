@@ -8,13 +8,6 @@ import LoaderComponent from "./LoadingComponent";
 import { IoLocationSharp } from "react-icons/io5";
 import { HiOutlineTrash } from "react-icons/hi";
 
-export const REGIONS = [
-    "Dolnośląskie", "Kujawsko-pomorskie", "Lubelskie", "Lubuskie", "Łódzkie", 
-    "Małopolskie", "Mazowieckie", "Opolskie", "Podkarpackie", "Podlaskie", 
-    "Pomorskie", "Śląskie", "Świętokrzyskie", "Warmińsko-mazurskie", 
-    "Wielkopolskie", "Zachodniopomorskie"
-];
-
 interface ListProps {
     fetchFunction: (queryString: string) => Promise<ThumbnailResponse>;
 }
