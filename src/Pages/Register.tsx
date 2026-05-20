@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ApiService from "../ApiService";
 import { useNavigate } from "react-router";
 import LoadingButton from "../Modules/LoadingButton";
@@ -92,12 +92,12 @@ export default function Register() {
         }
     }
 
-    const handleInputClick = () => {
+    useEffect(() => {
         setPasswordError(false);
-        if (password !== confirmPassword) {
+        if (password !== confirmPassword && confirmPassword.length > 0) {
             setPasswordError(true);
         }
-    }
+    }, [confirmPassword]);
 
     return(
         <div className="login-form">
@@ -129,7 +129,6 @@ export default function Register() {
                 <label>Powtórz hasło</label>
                 <input
                     className={passwordError ? "password-error" : ""}
-                    onClick={() => handleInputClick()}
                     type="password"
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     onKeyDown={(e) => handleKeyDown(e)}/>

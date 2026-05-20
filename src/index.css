@@ -569,6 +569,7 @@ input:focus,
     box-sizing: border-box;
     scroll-snap-type: x mandatory;
     justify-content: flex-start;
+    padding: 10px;
 }
 
 .mini-photo {
