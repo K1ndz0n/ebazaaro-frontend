@@ -34,12 +34,15 @@ export default function PostPage() {
                 if (token) {
                     ApiService.getLoggedUser(token).then((user) => {
                         if (user.name === post.author) {
-                            ApiService.isLiked(Number(id), token).then(setIsLiked);
-
-                            setIsMyPost(true);
+                            ApiService.isLiked(Number(id), token).then((liked) => {
+                                setIsLiked(liked);
+                                setIsMyPost(true);
+                                setIsLoading(false);
+                            });
+                        } else {
                             setIsLoading(false);
                         }
-                    })
+                    });
                 } else {
                     setIsLoading(false);
                 }
