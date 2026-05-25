@@ -25,27 +25,26 @@ export default function PostPage() {
         setIsLoading(true);
         setIsLiked(false);
         if (id) {
-            ApiService.getPost(Number(id)).then((post) => {
+            ApiService.getPost(Number(id)).then(async (post) => {
                 if (post === null) {
                     navigate("/404");
                     return;
                 }
 
                 if (token) {
-                    ApiService.getLoggedUser(token).then((user) => {
+                    await ApiService.getLoggedUser(token).then(async (user) => {
                         if (user.name === post.author) {
-                            ApiService.isLiked(Number(id), token).then((liked) => {
+                            await ApiService.isLiked(Number(id), token).then((liked) => {
                                 setIsLiked(liked);
-                                setIsMyPost(true);
-                                setIsLoading(false);
+                                setIsMyPost(true);       
                             });
-                        } else {
+
                             setIsLoading(false);
                         }
                     });
-                } else {
-                    setIsLoading(false);
                 }
+
+                setIsLoading(false);
 
                 if (post.photos.length > 1) {
                     post.photos.sort((a, b) => a.order - b.order);
