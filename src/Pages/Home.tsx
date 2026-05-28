@@ -12,6 +12,8 @@ export default function Home() {
 
     const [isLoading, setIsLoading] = useState(true);
 
+    const isMobile = window.innerWidth < 1025;
+
     useEffect(() => {
         fetchAll();
     }, []);
@@ -39,9 +41,18 @@ export default function Home() {
 
 
             <p className="home-page-text">Ogłoszenia w: Toruń</p>
-            {torun.map((th) => (
-                <PostThumbnail data={th} />
-            ))}
+            {isMobile ?
+                <>
+                    {torun.map((th) => (
+                        <BigThumbnail data={th} />
+                    ))}
+                </> :
+                <>
+                    {torun.map((th) => (
+                        <PostThumbnail data={th} />
+                    ))}
+                </>}
+            
         </div>
     );
 }

@@ -8,6 +8,7 @@ import LoaderComponent from "./LoadingComponent";
 import { IoLocationSharp } from "react-icons/io5";
 import { HiOutlineTrash } from "react-icons/hi";
 import { FiCrosshair } from "react-icons/fi";
+import BigThumbnail from "./BigThumbnail";
 
 interface ListProps {
     fetchFunction: (queryString: string) => Promise<ThumbnailResponse>;
@@ -28,6 +29,8 @@ export default function List({ fetchFunction }: ListProps) {
 
     const [isLoading, setIsLoading] = useState(true);
     const menuRef = useRef<HTMLDivElement>(null);
+
+    const isMobile = window.innerWidth < 1025;
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -284,9 +287,17 @@ export default function List({ fetchFunction }: ListProps) {
                 <span className="post-number">{data?.meta.total} ogłoszeń</span>
             </div>
 
-            {data?.data.map((t) => (
-                <PostThumbnail data={t}/>
-            ))}
+            {isMobile ?
+                <>
+                    {data?.data.map((t) => (
+                    <BigThumbnail data={t}/>
+                ))}
+                </>
+            : <>
+                {data?.data.map((t) => (
+                    <PostThumbnail data={t}/>
+                ))}
+            </>}
 
             <div className="page-manager">
                 <button

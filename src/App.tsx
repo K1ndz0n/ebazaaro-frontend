@@ -27,7 +27,8 @@ function AppContent() {
     const shouldHideCategories = 
         hideCategoryOn.includes(location.pathname) || 
         location.pathname.startsWith("/user/") ||
-        location.pathname.startsWith("/edit/");
+        location.pathname.startsWith("/edit/") ||
+        location.pathname.startsWith("/post/");
 
     const ProtectedRoute = ({ children }: Props) => {
         const token = localStorage.getItem("token");

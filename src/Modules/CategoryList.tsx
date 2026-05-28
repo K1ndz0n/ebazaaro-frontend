@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import type { Category } from "../ApiService";
 import ApiService from "../ApiService";
-import { LuChevronRight } from "react-icons/lu";
+import { LuChevronDown, LuChevronLeft, LuChevronRight } from "react-icons/lu";
 import { useLocation, useNavigate, useSearchParams } from "react-router";
 import LoaderComponent from "./LoadingComponent";
 
@@ -13,6 +13,9 @@ export default function CategoryList() {
     const navigate = useNavigate();
     const [params] = useSearchParams();
     const location = useLocation();
+
+    const isMobile = window.innerWidth < 1025;
+    const [show, setShow] = useState(false);
 
     const [isLoading, setIsLoading] = useState(true);
 
@@ -38,6 +41,7 @@ export default function CategoryList() {
     }, [params, location])
 
     const handleCategoryClick = (categoryName: string) => {
+        setShow(false);
         const newParams = new URLSearchParams(params);
         if (categoryName === "") {
             newParams.delete("category");
@@ -49,14 +53,9 @@ export default function CategoryList() {
         navigate(`/browser?${newParams.toString()}`);
     };
 
-    if (isLoading) return(
-        <div className="categories">
-            <LoaderComponent />
-        </div>
-    );
-
-    return(
-        <div className="categories">
+    const list = 
+        <>
+            {isMobile && <span className="category-button all" onClick={() => setShow(false)}><LuChevronLeft />Ukryj</span>}
             <span
                 className={`category-button all ${selectedCategory === "" && isInBrowser ? "selected" : ""}`}
                 onClick={() => handleCategoryClick("")}>
@@ -73,6 +72,28 @@ export default function CategoryList() {
                     <LuChevronRight />
                 </span>
             ))}
+        </>
+
+    if (isMobile) return(
+        <> 
+            <button className="show-categories" onClick={() => setShow(true)}>Kategorie <LuChevronDown /></button>
+            {show &&
+                <div className="categories-mobile">
+                    {list}
+                </div>
+            }
+        </>
+    );
+
+    if (isLoading) return(
+        <div className="categories">
+            <LoaderComponent />
+        </div>
+    );
+
+    return(
+        <div className="categories">
+            {list}
         </div>
     );
 }

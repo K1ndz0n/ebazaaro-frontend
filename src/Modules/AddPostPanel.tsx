@@ -253,7 +253,7 @@ export default function AddPostPanel({ editMode }: AddPostProps) {
     }
 
     const citiesComponent = 
-         <div className="city-search-container" ref={menuRef}>
+         <div className="city-search-container add" ref={menuRef}>
             <IoLocationSharp size={25} color="#666" />
             <span className="city-searchbar" onClick={() => handleMenuCLick()}>
                 {city
