@@ -936,6 +936,22 @@ textarea:focus {
     transition: background-color 0.2s;
 }
 
+.city-button.my-localization {
+    display: flex;
+    flex-direction: column;
+}
+
+.localization-label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.localization-permission {
+    font-size: 13px;
+    color: #888888;
+}
+
 .city-button:hover {
     background-color: #f0f0f0;
 }

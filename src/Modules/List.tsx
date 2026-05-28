@@ -7,6 +7,7 @@ import PostThumbnail from "./PostThumbnail";
 import LoaderComponent from "./LoadingComponent";
 import { IoLocationSharp } from "react-icons/io5";
 import { HiOutlineTrash } from "react-icons/hi";
+import { FiCrosshair } from "react-icons/fi";
 
 interface ListProps {
     fetchFunction: (queryString: string) => Promise<ThumbnailResponse>;
@@ -22,6 +23,8 @@ export default function List({ fetchFunction }: ListProps) {
     const [citySearch, setCitySearch] = useState("");
     const [selectedCity, setSeletedCity] = useState<City | null>(null);
     const [showCityMenu, setShowCityMenu] = useState(false);
+
+    const [coords, setCoords] = useState<{ lat: number | null; lng: number | null }>({ lat: null, lng: null });
 
     const [isLoading, setIsLoading] = useState(true);
     const menuRef = useRef<HTMLDivElement>(null);
@@ -61,6 +64,12 @@ export default function List({ fetchFunction }: ListProps) {
                 })
             }
 
+            const lat = Number(searchParams.get("user_lat"));
+            const lng = Number(searchParams.get("user_lng"));
+            if (lat && lng) {
+                setCoords({ lat, lng })
+            }
+
             setIsLoading(false);
         });
     }, [searchParams]);
@@ -74,7 +83,7 @@ export default function List({ fetchFunction }: ListProps) {
         }
     }, [citySearch]);
 
-    const updateParam = (key: string, value: string) => {
+    const updateParam = async (key: string, value: string) => {
         const newParams = new URLSearchParams(tempParams);
         
         if (value) {
@@ -83,10 +92,11 @@ export default function List({ fetchFunction }: ListProps) {
             newParams.delete(key);
         }
         
-        setTempParams(newParams);
+        await setTempParams(newParams);
     };
 
     const applyParams = () => {
+        console.log(tempParams.get("user_lng")?.toString());
         setSearchParams(tempParams);
     }
 
@@ -101,7 +111,7 @@ export default function List({ fetchFunction }: ListProps) {
         const newParams = new URLSearchParams(searchParams);
         newParams.set("page", pageNumber.toString());
         setSearchParams(newParams);
-    }
+    } 
 
     const handleMenuCLick = () => {
         setCities([]);
@@ -115,14 +125,36 @@ export default function List({ fetchFunction }: ListProps) {
         setCitySearch("");
 
         if (index === -1) {
-            updateParam("radius", "");
+            tempParams.delete("user_lat");
+            tempParams.delete("user_lng");
+            tempParams.delete("radius");
             setSeletedCity(null);
-            updateParam("city_id", "");
+            tempParams.delete("city_id");
+            setCoords({ lat: null, lng: null}); 
             return;
         }
 
         setSeletedCity(cities[index]);
         updateParam("city_id", cities[index].id.toString());
+    }
+
+    const handleMyLocalization = () => {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+
+                setCoords({ lat, lng });
+
+                tempParams.set("user_lat", lat.toString());
+                tempParams.set("user_lng", lng.toString());
+            },
+            (error) => {
+                console.error('Geolocation error:', error);
+            }
+        );
+
+        setShowCityMenu(false);
     }
 
     const citiesComponent = 
@@ -131,15 +163,15 @@ export default function List({ fetchFunction }: ListProps) {
             <span className="city-searchbar" onClick={() => handleMenuCLick()}>
                 {selectedCity
                 ? selectedCity.name + ", " + selectedCity.voivodeship
-                : "Cała Polska"}
+                : coords.lat ? "Moja lokalizacja" : "Cała Polska"}
             </span>
             <select
-                disabled={selectedCity === null}
-                value={selectedCity === null ? "" : tempParams.get("radius") ?? ""}
+                disabled={!selectedCity && !coords.lat && !coords.lng}
+                value={!selectedCity && !coords.lat && !coords.lng ? "" : tempParams.get("radius") ?? "0"}
                 onChange={(e) => updateParam("radius", e.target.value)}
                 className="filter-select"
-                >
-                <option value="">+0 km</option>
+            >
+                <option value="0">+0 km</option>
                 <option value="10">+10 km</option>
                 <option value="20">+20 km</option>
                 <option value="30">+30 km</option>
@@ -153,6 +185,13 @@ export default function List({ fetchFunction }: ListProps) {
             {showCityMenu &&
                 <div className="city-menu">
                     <span className="city-button" onClick={() => handleCityClick(-1)}>Cała Polska</span>
+                    <span className="city-button my-localization" onClick={() => handleMyLocalization()}>
+                        <div className="localization-label">
+                            <FiCrosshair color="black" />
+                            {" "}Moja lokalizacja
+                        </div>
+                        <span className="localization-permission">Wymaga pozwolenia na lokalizację</span>
+                    </span>
                     <input 
                         type="text"
                         placeholder="Miejscowość"
