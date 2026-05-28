@@ -127,7 +127,7 @@ footer {
 }
 
 .nav-button.logout {
-    margin-bottom: 20px;
+    margin-bottom: 100px;
 }
 
 .nav-button.add {
@@ -1034,15 +1034,7 @@ input:focus,
     font-size: 20px;
 }
 
-@media (max-width: 1024px) {
-    .add-post-input {
-        width: 100%;
-    }
 
-    .city-search-container.add {
-        width: 100%;
-    }
-}
 
 textarea {
     line-height: 1;
@@ -1062,6 +1054,20 @@ textarea {
     word-break: break-word;
 
     font-family: inherit;
+}
+
+@media (max-width: 1024px) {
+    .add-panel input[type="text"], textarea {
+        width: auto;
+    }
+
+    .add-post-input {
+        width: 80vw;
+    }
+
+    .city-search-container.add {
+        width: 100%;
+    }
 }
 
 textarea:focus {
@@ -1264,24 +1270,30 @@ textarea:focus {
     flex-direction: column;
     justify-content: center;
     padding: 20px;
-    width: 345px;
+    width: 335px;
 
     transition: background-color 0.2s;
 }
 
 .big-thumbnail .icon {
     height: 240px;
-    width: 345px;
+    width: 335px;
     margin-bottom: 10px;
 }
 
 .big-thumbnail-photo {
     height: 240px;
-    width: 345px;
+    width: 335px;
     min-width: 160px;
     object-fit: cover;
     opacity: 0.95;
     margin-bottom: 10px;
+}
+
+@media (max-width: 1024px) {
+    .big-thumbnail {
+        padding: 10px;
+    }
 }
 
 .big-thumbnail-info-wrapper {
