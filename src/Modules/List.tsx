@@ -59,7 +59,7 @@ export default function List({ fetchFunction }: ListProps) {
         setIsLoading(true);
         fetchFunction(searchParams.toString()).then((th) => {
             setData(th);
-            const cityId = searchParams.get("city_id");
+            const cityId = searchParams.get("cityId");
             if (cityId) {
                 ApiService.getCityById(Number(cityId)).then((c) => {
                     setSeletedCity(c);
@@ -67,8 +67,8 @@ export default function List({ fetchFunction }: ListProps) {
                 })
             }
 
-            const lat = Number(searchParams.get("user_lat"));
-            const lng = Number(searchParams.get("user_lng"));
+            const lat = Number(searchParams.get("userLat"));
+            const lng = Number(searchParams.get("userLng"));
             if (lat && lng) {
                 setCoords({ lat, lng })
             }
@@ -99,7 +99,7 @@ export default function List({ fetchFunction }: ListProps) {
     };
 
     const applyParams = () => {
-        console.log(tempParams.get("user_lng")?.toString());
+        console.log(tempParams.get("userLng")?.toString());
         setSearchParams(tempParams);
     }
 
@@ -128,17 +128,17 @@ export default function List({ fetchFunction }: ListProps) {
         setCitySearch("");
 
         if (index === -1) {
-            tempParams.delete("user_lat");
-            tempParams.delete("user_lng");
+            tempParams.delete("userLat");
+            tempParams.delete("userLng");
             tempParams.delete("radius");
             setSeletedCity(null);
-            tempParams.delete("city_id");
+            tempParams.delete("cityId");
             setCoords({ lat: null, lng: null}); 
             return;
         }
 
         setSeletedCity(cities[index]);
-        updateParam("city_id", cities[index].id.toString());
+        updateParam("cityId", cities[index].id.toString());
     }
 
     const handleMyLocalization = () => {
@@ -149,8 +149,8 @@ export default function List({ fetchFunction }: ListProps) {
 
                 setCoords({ lat, lng });
 
-                tempParams.set("user_lat", lat.toString());
-                tempParams.set("user_lng", lng.toString());
+                tempParams.set("userLat", lat.toString());
+                tempParams.set("userLng", lng.toString());
             },
             (error) => {
                 console.error('Geolocation error:', error);
@@ -246,16 +246,16 @@ export default function List({ fetchFunction }: ListProps) {
                         <input
                             type="number"
                             min={0}
-                            value={tempParams.get("price_from") ?? ""}
-                            onChange={(e) => updateParam("price_from", e.target.value)}/>
+                            value={tempParams.get("priceFrom") ?? ""}
+                            onChange={(e) => updateParam("priceFrom", e.target.value)}/>
                     </div>
                     <div className="filter-input-wrapper">
                         <label>Cena max (zł)</label>
                         <input
                             type="number"
                             min={0}
-                            value={tempParams.get("price_to") ?? ""}
-                            onChange={(e) => updateParam("price_to", e.target.value)}/>
+                            value={tempParams.get("priceTo") ?? ""}
+                            onChange={(e) => updateParam("priceTo", e.target.value)}/>
                     </div>
                     <div className="filter-input-wrapper">
                         <label>Stan</label>
@@ -309,12 +309,12 @@ export default function List({ fetchFunction }: ListProps) {
                 </button>
                 <span>Strona {page} {" "}</span>
                 <span>z {" "}</span>
-                <span className="last-page" onClick={() => data?.meta && changePage(data?.meta.last_page)}>
-                    {data?.meta.last_page}
+                <span className="last-page" onClick={() => data?.meta && changePage(data?.meta.lastPage)}>
+                    {data?.meta.lastPage}
                 </span>
                 <button
                     className="page-button"
-                    disabled={!data?.meta || page >= data.meta.last_page}
+                    disabled={!data?.meta || page >= data.meta.lastPage}
                     onClick={() => changePage(page + 1)}
                 >
                     <LuChevronRight size={25} />

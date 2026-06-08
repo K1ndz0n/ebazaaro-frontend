@@ -64,14 +64,14 @@ export default function AddPostPanel({ editMode }: AddPostProps) {
                         return;
                     }
 
-                    if (user.name !== data.author) {
+                    if (user.username !== data.author) {
                         navigate("/");
                         return;
                     }
                     
                     setName(data.name);
                     setDescription(data.description);
-                    setPhoneNumber(data.phone_number);
+                    setPhoneNumber(data.phoneNumber);
                     setEmail(data.email);
                     setPrice(data.price);
                     setCategoryId(data.category.id);
@@ -190,11 +190,11 @@ export default function AddPostPanel({ editMode }: AddPostProps) {
 
         const formData = new FormData();
         photos.forEach((photo, index) => {
-            formData.append(`photos[${index}][id]`, photo.id.toString());
-            formData.append(`photos[${index}][order]`, photo.order.toString());
+            formData.append(`photos[${index}].id`, photo.id.toString());
+            formData.append(`photos[${index}].order`, photo.order.toString());
 
             if (photo.id === -1 && photo.file) {
-                formData.append(`photos[${index}][file]`, photo.file);
+                formData.append(`photos[${index}].file`, photo.file);
             }
         });
 
@@ -205,12 +205,12 @@ export default function AddPostPanel({ editMode }: AddPostProps) {
         const postData: AddPostData = {
             name: name,
             description: description,
-            city_id: city?.id,
-            phone_number: phoneNumber,
+            cityId: city?.id,
+            phoneNumber: phoneNumber,
             email: email,
             price: price,
             condition: condition,
-            category_id: categoryId,
+            categoryId: categoryId,
         };
 
         try {
@@ -229,7 +229,7 @@ export default function AddPostPanel({ editMode }: AddPostProps) {
                     })
                 }
             }
-        } catch { }
+        } catch(e) { console.error("Błąd:", e);  }
     }
 
     const handleMenuCLick = () => {

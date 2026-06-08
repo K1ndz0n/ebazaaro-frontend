@@ -62,9 +62,9 @@ export default function NavMenu({ menuOpen, setMenuOpen }: NavMenuProps) {
                     {isLoading ? <div style={{margin: "auto", position: "relative"}}><LoaderComponent /></div> :
                     <>
                         <button className="nav-button add" onClick={() => handleClick("/add")}>+ Dodaj</button>
-                        <button className="nav-button" onClick={() => handleClick(`/user/${user?.name}`)}>Moje ogłoszenia</button>
+                        <button className="nav-button" onClick={() => handleClick(`/user/${user?.username}`)}>Moje ogłoszenia</button>
                         <button className="nav-button" onClick={() => handleClick("/saved")}>Zapisane ogłoszenia</button>
-                        <p>{user?.name}</p>
+                        <p>{user?.username}</p>
                         <button className="nav-button logout" onClick={() => handleLogout()}><FiPower /> Wyloguj</button>
                     </>}
                 </>

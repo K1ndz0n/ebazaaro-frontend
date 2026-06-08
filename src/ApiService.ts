@@ -1,6 +1,6 @@
 export interface User {
     id: number;
-    name: string;
+    username: string;
 }
 
 export interface LoginData {
@@ -40,8 +40,8 @@ export interface Thumbnail {
 }
 
 export interface Meta {
-    current_page: number;
-    last_page: number;
+    currentPage: number;
+    lastPage: number;
     total:number;
 }
 
@@ -64,9 +64,9 @@ export interface Post {
     city: City;
     price: number;
     email: string;
-    phone_number?: string;
+    phoneNumber?: string;
     condition: string;
-    created_at: string;
+    createdAt: string;
     photos: Photo[];
     category: Category;
     author: string;
@@ -75,12 +75,12 @@ export interface Post {
 export interface AddPostData {
     name: string;
     description?: string;
-    city_id: number;
-    phone_number?: string
+    cityId: number;
+    phoneNumber?: string
     email: string;
     price: number;
     condition: string;
-    category_id: number
+    categoryId: number;
 }
 
 export default class ApiService {
@@ -88,7 +88,7 @@ export default class ApiService {
 
     static async getLoggedUser(token: string) {
         const response = await fetch(
-            `${this.url}/api/user`, {
+            `${this.url}/api/user/me/details`, {
                 headers: {
                     "Authorization": `Bearer ${token}`
                 }
@@ -126,7 +126,7 @@ export default class ApiService {
         }
 
         if (!response.ok) {
-            if (response.status === 401) {
+            if (response.status === 403) {
                 throw new Error("Niepoprawny email lub hasło");
             }
 
@@ -136,8 +136,8 @@ export default class ApiService {
         return data as LoginData;
     }
 
-    static async register(email: string, name: string, password: string, 
-        password_confirmation: string, recaptcha_token: string | null | undefined) {
+    static async register(email: string, username: string, password: string, 
+        confirmPassword: string, recaptchaToken: string | null | undefined) {
     
         const response = await fetch(`${this.url}/api/auth/register`, {
             method: "POST",
@@ -147,17 +147,17 @@ export default class ApiService {
             },
             body: JSON.stringify({
                 email,
-                name,
+                username,
                 password,
-                password_confirmation,
-                recaptcha_token
+                confirmPassword,
+                recaptchaToken
             })
         });
  
         const data = await response.json();
 
         if (!response.ok) {
-            if (response.status === 422) {
+            if (response.status === 409) {
                 throw data;
             }
             throw new Error(data.message || "Coś poszło nie tak");
@@ -178,12 +178,11 @@ export default class ApiService {
             throw new Error("Coś poszło nie tak");
         }
 
-        const data = await response.json() as CategoryResponse;
-        return data.data;
+        return await response.json() as Category[];
     }
 
     static async getThumbnails(params: string) {
-        const response = await fetch(`${this.url}/api/post/thumbnails?${params}`, {
+        const response = await fetch(`${this.url}/api/posts/thumbnails?${params}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -198,7 +197,7 @@ export default class ApiService {
     }
 
     static async getThumbnailsByUsername(params: string, username: string) {
-        const response = await fetch(`${this.url}/api/post/thumbnails/${username}?${params}`, {
+        const response = await fetch(`${this.url}/api/posts/thumbnails/${username}?${params}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -229,7 +228,7 @@ export default class ApiService {
     }
 
     static async getPost(id: number) {
-        const response = await fetch(`${this.url}/api/post/${id}`, {
+        const response = await fetch(`${this.url}/api/posts/${id}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -244,12 +243,11 @@ export default class ApiService {
             throw new Error("Coś poszło nie tak");
         }
 
-        const data = await response.json();
-        return data.data as Post;
+        return await response.json() as Post;
     }
 
     static async addPost(data: AddPostData, token: string) {
-        const response = await fetch(`${this.url}/api/posts`, {
+        const response = await fetch(`${this.url}/api/posts/add`, {
             method: "POST",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -263,12 +261,11 @@ export default class ApiService {
             throw new Error("Coś poszło nie tak");
         }
 
-        const newData = await response.json();
-        return newData.data as Post;
+        return await response.json() as Post;
     }
 
     static async updatePost(id: number, data: AddPostData, token: string) {
-        const response = await fetch(`${this.url}/api/posts/${id}`, {
+        const response = await fetch(`${this.url}/api/posts/edit/${id}`, {
             method: "PUT",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -282,12 +279,11 @@ export default class ApiService {
             throw new Error("Coś poszło nie tak");
         }
 
-        const newData = await response.json();
-        return newData.data as Post;
+        return await response.json() as Post;
     }
 
     static async setPhotos(id: number, data: FormData, token: string) {
-        const response = await fetch(`${this.url}/api/posts/${id}/photos/set`, {
+        const response = await fetch(`${this.url}/api/photos/set/${id}`, {
             method: "POST",
             body: data,
             headers: {
@@ -298,12 +294,10 @@ export default class ApiService {
         if (!response.ok) {
             throw new Error("Coś poszło nie tak");
         }
-
-        return await response.json();
     }
 
     static async getCities(name: string) {
-        const response = await fetch(`${this.url}/api/cities/${name}`, {
+        const response = await fetch(`${this.url}/api/cities/find/${name}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -314,12 +308,11 @@ export default class ApiService {
             throw new Error("Coś poszło nie tak");
         }
 
-        const data = await response.json() as CitiesResponse;
-        return data.data;
+        return await response.json() as City[];
     }
 
     static async getCityById(id: number) {
-        const response = await fetch(`${this.url}/api/city/${id}`, {
+        const response = await fetch(`${this.url}/api/cities/${id}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -330,12 +323,11 @@ export default class ApiService {
             throw new Error("Coś poszło nie tak");
         }
 
-        const data = await response.json();
-        return data.data as City;
+        return await response.json() as City;
     }
 
     static async deletePost(id: number, token: string) {
-        const response = await fetch(`${this.url}/api/posts/${id}`, {
+        const response = await fetch(`${this.url}/api/posts/delete/${id}`, {
             method: "DELETE",
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -350,16 +342,12 @@ export default class ApiService {
     }
     
     static async addLike(id: number, token: string) {
-        const response = await fetch(`${this.url}/api/likes`, {
-            method: "POST",
+        const response = await fetch(`${this.url}/api/likes/add/${id}`, {
+            method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
                 "Content-Type": "application/json",
-                'Accept': 'application/json',
             },
-            body: JSON.stringify({
-                "post_id": id
-            })
         });
 
         if (!response.ok) {
@@ -370,7 +358,7 @@ export default class ApiService {
     }
 
     static async deleteLike(id: number, token: string) {
-        const response = await fetch(`${this.url}/api/likes/${id}`, {
+        const response = await fetch(`${this.url}/api/likes/delete/${id}`, {
             method: "DELETE",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -404,7 +392,7 @@ export default class ApiService {
     }
 
     static async getLikedPosts(params: string, token: string) {
-        const response = await fetch(`${this.url}/api/posts/liked?${params}`, {
+        const response = await fetch(`${this.url}/api/posts/thumbnails/liked?${params}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

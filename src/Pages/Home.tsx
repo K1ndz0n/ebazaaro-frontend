@@ -19,10 +19,10 @@ export default function Home() {
     }, []);
 
     const fetchAll = async() => {
-        await ApiService.getThumbnails("page_size=3")
+        await ApiService.getThumbnails("size=3")
             .then((data) => setLatest(data.data));
 
-        await ApiService.getThumbnails("city_id=5419&page_size=5")
+        await ApiService.getThumbnails("cityId=5419&size=5")
             .then((data) => setTorun(data.data));
 
         setIsLoading(false);

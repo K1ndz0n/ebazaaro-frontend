@@ -81,7 +81,7 @@ export default function Register() {
             if (err.errors) {
                 setErrors(err.errors);
             } else {
-                setError(err instanceof Error ? err.message : 'Wystąpił błąd');
+                setError(err instanceof Error ? err.message : err.error || 'Wystąpił błąd');
             } 
         }
     };

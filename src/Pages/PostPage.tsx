@@ -33,7 +33,7 @@ export default function PostPage() {
 
                 if (token) {
                     await ApiService.getLoggedUser(token).then(async (user) => {
-                        if (user.name === post.author) {
+                        if (user.username === post.author) {
                             await ApiService.isLiked(Number(id), token).then((liked) => {
                                 setIsLiked(liked);
                                 setIsMyPost(true);       
@@ -142,7 +142,7 @@ export default function PostPage() {
                 {photoComponent}
                 <div className="description">
                     <span className="post-name">Opis</span>
-                    <p style={{whiteSpace: "pre-wrap", wordBreak: "break-word"}}>{data?.description ?? "Brak opisu."}</p>
+                    <p style={{whiteSpace: "pre-wrap", wordBreak: "break-word"}}>{data?.description || "Brak opisu."}</p>
                 </div>
             </div>
             <div className="details-right">
@@ -158,7 +158,7 @@ export default function PostPage() {
                         Ogłoszenie użytkownika {" "}
                         <span className="author-link" onClick={() => navigate(`/user/${data?.author}`)}>{data?.author}</span>
                     </span>
-                    <span style={{color: "#494949", fontSize: "14px"}}>Utworzono {data?.created_at}</span>
+                    <span style={{color: "#494949", fontSize: "14px"}}>Utworzono {data?.createdAt}</span>
                     <p style={{fontSize: "18px"}}>{data?.city.name}, {data?.city.voivodeship}</p>
                     <div className="info-down">
                         <span className="price">{data?.price} zł | {data?.condition === "new" ? "Nowy" : "Używany"}</span>
@@ -167,7 +167,7 @@ export default function PostPage() {
                 <div className="contact-info">
                     <span className="post-name">Dane kontaktowe</span>
                     <span className="contact-data">{data?.email}</span>
-                    <span className="contact-data">Telefon: {data?.phone_number ?? "brak"}</span>
+                    <span className="contact-data">Telefon: {data?.phoneNumber ?? "brak"}</span>
                 </div>
             </div>
         </div>
