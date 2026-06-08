@@ -12,20 +12,12 @@ export interface Category {
     name: string;
 }
 
-interface CategoryResponse {
-    data: Category[];
-}
-
 export interface City {
     id: number;
     name: string;
     voivodeship: string;
     latitude: number;
     longtitude: number;
-}
-
-interface CitiesResponse {
-    data: City[];
 }
 
 export interface Thumbnail {
